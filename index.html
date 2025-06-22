@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쿠팡 이동중...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .loading {
+            font-size: 40px;
+            margin: 20px 0;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .text {
+            color: #333;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading">🛒</div>
+        <div class="text">쿠팡으로 이동중...</div>
+        <div style="font-size: 12px; color: #666;">2초 후 자동 이동</div>
+    </div>
+
+    <!-- 인포크 트래킹용 이미지 (숨김) -->
+    <img src="https://link.inpock.co.kr/pixelpick" style="display:none" onerror="this.style.display='none'">
+    
+    <script>
+        // 2초 후 쿠팡으로 이동
+        setTimeout(() => {
+            window.location.href = 'https://link.coupang.com/a/cyqPi5';
+        }, 2000);
+    </script>
+</body>
+</html>
