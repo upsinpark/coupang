@@ -3,53 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쿠팡적립</title>
+    <title>쿠팡 바로가기</title>
+    
+    <!-- PWA 설정 -->
+    <meta name="theme-color" content="#ff6b6b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="쿠팡 바로가기">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ff6b6b'/><text y='70' font-size='60' text-anchor='middle' x='50'>🛒</text></svg>">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi7L+o7YyoIOustOuhnOqwgOq4sCIsInNob3J0X25hbWUiOiLsv6jtjKgiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmNWY1ZjUiLCJ0aGVtZV9jb2xvciI6IiNmZjZiNmIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyUyM2ZmNmI2YicvPjx0ZXh0IHk9JzcwJyBmb250LXNpemU9JzYwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyB4PSc1MCc+8J+bgjwvdGV4dD48L3N2Zz4iLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 50px;
-            background: #f5f5f5;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
+            padding: 40px 30px;
+            border-radius: 20px;
             max-width: 300px;
-            margin: 0 auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .icon {
+            font-size: 60px;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .title {
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
         }
         .loading {
-            font-size: 40px;
+            color: #ff6b6b;
+            font-size: 16px;
             margin: 20px 0;
-            animation: spin 2s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .text {
+        .install-prompt {
+            background: #f0f8ff;
+            border: 2px solid #007acc;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
             color: #333;
-            margin: 10px 0;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="loading">🛒</div>
-        <div class="text">쿠팡으로 이동중...</div>
-        <div style="font-size: 12px; color: #666;">2초 후 자동 이동</div>
+        <div class="icon">🛒</div>
+        <div class="title">쿠팡 바로가기</div>
+        <div class="subtitle">잠시만 기다려주세요</div>
+        <div class="loading">🔄 쿠팡으로 이동중...</div>
+        
+        <div class="install-prompt" id="installPrompt">
+            📱 홈 화면에 추가하면 더 쉽게 사용할 수 있어요!<br>
+            <small>브라우저 메뉴 → "홈 화면에 추가"</small>
+        </div>
     </div>
 
-    <!-- 인포크 트래킹용 이미지 (숨김) -->
+    <!-- 인포크 트래킹 -->
     <img src="https://link.inpock.co.kr/pixelpick" style="display:none" onerror="this.style.display='none'">
     
     <script>
-        // 2초 후 쿠팡으로 이동
+        // PWA 설치 프롬프트
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+        
+        // 서비스 워커 등록
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4geyBzZWxmLnNraXBXYWl0aW5nKCk7IH0pOyBzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZXZlbnQgPT4geyBldmVudC53YWl0VW50aWwoc2VsZi5jbGllbnRzLmNsYWltKCkpOyB9KTs=')
+                .catch(err => console.log('SW registration failed'));
+        }
+        
+        // 자동 쿠팡 이동
         setTimeout(() => {
             window.location.href = 'https://link.coupang.com/a/cyqPi5';
         }, 2000);
+        
+        // 설치 프롬프트 숨기기 (5초 후)
+        setTimeout(() => {
+            document.getElementById('installPrompt').style.display = 'none';
+        }, 5000);
     </script>
 </body>
 </html>
