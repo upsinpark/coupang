@@ -1,126 +1,121 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쿠팡 바로가기</title>
-    
-    <!-- PWA 설정 -->
-    <meta name="theme-color" content="#ff6b6b">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="쿠팡 바로가기">
-   <!-- manifest 연결 -->
-<link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿠팡 바로가기</title>
 
-<!-- 아이콘 -->
-<link rel="apple-touch-icon" href="icon.png">
-    <!-- service worker 등록 -->
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('SW registered'))
-      .catch(err => console.log('SW registration failed', err));
-  }
-</script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            max-width: 300px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .icon {
-            font-size: 60px;
-            margin: 20px 0;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .title {
-            color: #333;
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .loading {
-            color: #ff6b6b;
-            font-size: 16px;
-            margin: 20px 0;
-        }
-        .install-prompt {
-            background: #f0f8ff;
-            border: 2px solid #007acc;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 14px;
-            color: #333;
-            display: none;
-        }
-    </style>
+  <!-- PWA 설정 -->
+  <meta name="theme-color" content="#ff6b6b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="쿠팡 바로가기">
+
+  <!-- manifest 연결 -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <!-- service worker 등록 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('SW registered'))
+        .catch(err => console.log('SW registration failed', err));
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .icon {
+      font-size: 60px;
+      margin: 20px 0;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .title {
+      color: #333;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    .link-btn {
+      display: block;
+      padding: 15px;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .install-prompt {
+      background: #f0f8ff;
+      border: 2px solid #007acc;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: #333;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="icon">🛒</div>
-        <div class="title">쿠팡 바로가기</div>
-        <div class="subtitle">잠시만 기다려주세요</div>
-        <div class="loading">🔄 쿠팡으로 이동중...</div>
-        
-        <div class="install-prompt" id="installPrompt">
-            📱 홈 화면에 추가하면 더 쉽게 사용할 수 있어요!<br>
-            <small>브라우저 메뉴 → "홈 화면에 추가"</small>
-        </div>
+  <div class="container">
+    <img src="icon.png" alt="쿠팡 아이콘" class="icon">
+    <div class="title">쿠팡 홈 이동 안내</div>
+    <div class="subtitle">👇 아래 버튼을 눌러 쿠팡 홈으로 이동해 주세요</div>
+    <a href="https://link.inpock.co.kr/your-partners-link" class="link-btn">
+      👉 쿠팡 홈 바로가기
+    </a>
+    <div class="install-prompt" id="installPrompt">
+      📱 홈 화면에 추가하면 더 쉽게 사용할 수 있어요!<br>
+      <small>브라우저 메뉴 → "홈 화면에 추가"</small>
     </div>
+  </div>
 
-    <!-- 인포크 트래킹 -->
-    <img src="https://link.inpock.co.kr/pixelpick" style="display:none" onerror="this.style.display='none'">
-    
-    <script>
-        // PWA 설치 프롬프트
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installPrompt').style.display = 'block';
-        });
-        
-        // 서비스 워커 등록
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4geyBzZWxmLnNraXBXYWl0aW5nKCk7IH0pOyBzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2FjdGl2YXRlJywgZXZlbnQgPT4geyBldmVudC53YWl0VW50aWwoc2VsZi5jbGllbnRzLmNsYWltKCkpOyB9KTs=')
-                .catch(err => console.log('SW registration failed'));
-        }
-        
-        // 자동 쿠팡 이동
-        setTimeout(() => {
-            window.location.href = 'https://link.coupang.com/a/cyqPi5';
-        }, 2000);
-        
-        // 설치 프롬프트 숨기기 (5초 후)
-        setTimeout(() => {
-            document.getElementById('installPrompt').style.display = 'none';
-        }, 5000);
-    </script>
+  <!-- 인포크 트래킹 -->
+  <img src="https://link.inpock.co.kr/pixelpick" style="display:none" onerror="this.style.display='none'">
+
+  <script>
+    // PWA 설치 프롬프트 표시
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installPrompt').style.display = 'block';
+    });
+
+    // 설치 프롬프트 자동 숨김
+    setTimeout(() => {
+      document.getElementById('installPrompt').style.display = 'none';
+    }, 5000);
+  </script>
 </body>
 </html>
