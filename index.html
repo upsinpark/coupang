@@ -10,9 +10,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="쿠팡 바로가기">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ff6b6b'/><text y='70' font-size='60' text-anchor='middle' x='50'>🛒</text></svg>">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi7L+o7YyoIOustOuhnOqwgOq4sCIsInNob3J0X25hbWUiOiLsv6jtjKgiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmNWY1ZjUiLCJ0aGVtZV9jb2xvciI6IiNmZjZiNmIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHJlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyUyM2ZmNmI2YicvPjx0ZXh0IHk9JzcwJyBmb250LXNpemU9JzYwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyB4PSc1MCc+8J+bgjwvdGV4dD48L3N2Zz4iLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
-    
+   <!-- manifest 연결 -->
+<link rel="manifest" href="manifest.json">
+
+<!-- 아이콘 -->
+<link rel="apple-touch-icon" href="icon.png">
+    <!-- service worker 등록 -->
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('SW registered'))
+      .catch(err => console.log('SW registration failed', err));
+  }
+</script>
     <style>
         body {
             font-family: Arial, sans-serif;
